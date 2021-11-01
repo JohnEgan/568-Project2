@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        h3{
+            font-family: Helvetica;
+        }
+        .line{
+            stroke: black;
+            stroke-width: 1px;
+            fill:none;
+        }
+        svg{
+            width: 850px;
+            height: 650px;
+            display: block;
+            margin: auto;
+            background-color:beige;
+        }
+    </style>
+</head>
+<body>
+<div style="width: 80%"></div>
+<script>
+//Use d3.line() generator to calculate attribute "d" for "path" element
+//Make use of scaleLinear and scaleTime function
+//Give a different color foreach line
+
+    //S1501_C01_012E
+    stateData = "https://raw.githubusercontent.com/JohnEgan/568-Project2/main/AllStatesEducationLevels.csv";
+    //stateData = 'C:\Users\John\Desktop\AllStateEducationLevels.csv';
+    const loadData = d3.csv(stateData,
+        function(d) {
+        return {
+            state: new State(d.NAME),
+            eduLvl: new eduLvl(d.S1501_C01_012E)
+        }
+    }).then(data => 
+        {
+            console.log(data)
+            //let svg = d3.select("body").append("svg");
+            /*
+            const margin = 40;
+            
+            let xScale = d3.scaleTime().domain(d3.extent(data,d=>d['date'])).range([0 + margin, 800-margin]);
+            let yScale = d3.scaleLinear().domain(d3.extent(data,d=>d['EstimatedCost'])).range([600-margin*3, 0 + margin]);
+            
+            let line=d3.line()
+                .x(function(d) { return xScale(d.date) })
+                .y(function(d) { return yScale(d.EstimatedCost) })
+
+            let line2=d3.line()
+                .x(function(d) { return xScale(d.date) })
+                .y(function(d) { return yScale(d.RawMaterial) })
+
+            let line3=d3.line()
+                .x(function(d) { return xScale(d.date) })
+                .y(function(d) { return yScale(d.Workmanship) })
+
+            let line4=d3.line()
+                .x(function(d) { return xScale(d.date) })
+                .y(function(d) { return yScale(d.YearlyStorage) })
+            
+            svg.append("path")
+                .data([data])
+                .attr("class", "line")
+                .attr("d", line)
+                .attr("fill",'none')
+                .style("stroke",'black')
+                .style("stroke-width",'1px'.toString()+"px");
+
+            svg.append("path")
+                .data([data])
+                .attr("class", "line")
+                .attr("d", line2)
+                .attr("fill",'none')
+                .style("stroke",'red')
+                .style("stroke-width",'1px'.toString()+"px");
+
+            svg.append("path")
+                .data([data])
+                .attr("class", "line")
+                .attr("d", line3)
+                .attr("fill",'none')
+                .style("stroke",'green')
+                .style("stroke-width",'1px'.toString()+"px");
+
+            svg.append("path")
+                .data([data])
+                .attr("class", "line")
+                .attr("d", line4)
+                .attr("fill",'none')
+                .style("stroke",'purple')
+                .style("stroke-width",'1px'.toString()+"px");
+
+            const xAxis = d3.axisBottom().scale(xScale);
+            const yAxis = d3.axisLeft().scale(yScale)
+
+            svg.append("g").attr("transform", `translate(0,${600-margin})`).call(xAxis);
+            svg.append("g").attr("transform",`translate(${0+margin},0)`).call(yAxis);
+
+            svg.append("circle").attr("cx",715).attr("cy",50).attr("r", 6).style("fill", 'black')
+            svg.append("text").attr("x", 735).attr("y", 50).text("Estimated Cost").style("font-size", "15px").attr("alignment-baseline","middle")
+            svg.append("circle").attr("cx",715).attr("cy",70).attr("r", 6).style("fill", "red")
+            svg.append("text").attr("x", 735).attr("y", 70).text("Raw Material").style("font-size", "15px").attr("alignment-baseline","middle")
+            svg.append("circle").attr("cx",715).attr("cy",90).attr("r", 6).style("fill", "green")
+            svg.append("text").attr("x", 735).attr("y", 90).text("Workmanship").style("font-size", "15px").attr("alignment-baseline","middle")
+            svg.append("circle").attr("cx",715).attr("cy",110).attr("r", 6).style("fill", "purple")
+            svg.append("text").attr("x", 735).attr("y", 110).text("Yearly Storage").style("font-size", "15px").attr("alignment-baseline","middle")
+
+            svg.append("text").attr("x", 400).attr("y", 600).text("Date").style("font-size", "15px").attr("alignment-baseline","middle")
+
+            svg.append("text").attr("x", 400).attr("y", 50).text("Date/Data").style("font-size", "15px").attr("alignment-baseline","middle")
+            */
+            
+        
+        })
+     
+</script>
+</body>
+</html>
