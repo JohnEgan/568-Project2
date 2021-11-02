@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        h3{
+            font-family: Helvetica;
+        }
+        .line{
+            stroke: black;
+            stroke-width: 1px;
+            fill:none;
+        }
+        svg{
+            width: 850px;
+            height: 2000px;
+            display: block;
+            margin: auto;
+            background-color:beige;
+        }
+    </style>
+</head>
+<body>
+<svg></svg>
+<script>
+
+    const svg = d3.select('svg');
+
+    const width = 1000;
+    const height = 2000;
+    console.log(width);
+    const render = data => {
+
+        const xValue = d => d.Over25Bachelors;
+        const yValue = d => d.GeographicAreaName;
+        const margin = {top: 10, right: 200, bottom: 20, left: 70};
+        const innerwidth = width -margin.left -margin.right;
+        const innerHeight = height-margin.top - margin.bottom;
+
+        const xScale = d3.scaleLinear()
+            .domain([0, d3.max(data, xValue)])
+            .range([0, innerwidth]);
+
+        const yScale = d3.scaleBand()
+            .domain(data.map(yValue))
+            .range([0,innerHeight])
+
+        const g = svg.append('g')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
+        
+        g.append('g').call(d3.axisLeft(yScale));
+        g.append('g').call(d3.axisBottom(xScale))
+            .attr('transform', `translate(0, ${innerHeight})`);;
+
+        g.selectAll('rect').data(data)
+            .enter().append('rect')
+                .attr('y', d=> yScale(yValue(d)))
+                .attr('width', d => xScale(xValue(d)))
+                .attr('height', yScale.bandwidth());
+    };
+
+    d3.csv('AllStatesEducationLevelsTest.csv').then(data =>{
+        data.forEach(d =>{
+            d.Over25Bachelors = Number(d.Over25Bachelors);
+        });
+
+    render(data);
+        
+        })
+     
+</script>
+</body>
+</html>
