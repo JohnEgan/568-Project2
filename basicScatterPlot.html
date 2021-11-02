@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<nav>
-  <ul class="nav">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="basicScatterPlot.html">Scatter 1</a></li>
-    <li><a href="barchart.html">Bar chart 1</a></li>
-    <li><a href="ColorState.html">State Image</a></li>
-  </ul>
-</nav>
-
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
 
@@ -19,8 +10,8 @@
 <script>
     // set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    width = 700,
+    height = 500;
 
     // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz")
@@ -37,8 +28,13 @@ console.log(data);
 var x = d3.scaleLinear()
   .domain([0, 10000000])
   .range([ 0, width ]);
+svg.append("text")
+  .attr("x", 800)
+  .attr("y", 50)
+  .text("Median Earnings");
 svg.append("g")
   .attr("transform", "translate(0," + height + ")")
+  .text("Total Population")
   .call(d3.axisBottom(x));
 
 // Add Y axis
@@ -46,6 +42,7 @@ var y = d3.scaleLinear()
     .domain([0, 5000])
     .range([ height, 0]);
   svg.append("g")
+  .text("Median Earnings")
     .call(d3.axisLeft(y));
 
   // Add dots
