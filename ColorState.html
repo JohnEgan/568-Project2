@@ -33,7 +33,7 @@ var svg = d3.select("svg");
 var path = d3.geoPath();
 //
 //d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-d3.json("./data/states-albers-10m.json", function(error, us) {
+  d3.json("./data/states-albers-10m.json", function(error, us) {
   console.log(us);
   if (error) throw error;
 
@@ -42,11 +42,18 @@ d3.json("./data/states-albers-10m.json", function(error, us) {
     .selectAll("path")
     .data(topojson.feature(us, us.objects.states).features)
     .enter().append("path")
-      .attr("d", path);
+      .attr("d", path)
+      .on("click", click);
 
   svg.append("path")
       .attr("class", "state-borders")
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+
+
 });
+
+function click(d) {
+  console.log(d.properties.name);
+}
 
 </script>
