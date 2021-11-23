@@ -1,54 +1,53 @@
-GeographicAreaName,Over25Bachelors
-Alabama,547975
-Alaska,89583
-Arizona,931038
-Arkansas,307185
-California,5889724
-Colorado,1057825
-Connecticut,549166
-Delaware,134287
-District of Columbia,129825
-Florida,2982643
-Georgia,1410395
-Hawaii,219979
-Idaho,220189
-Illinois,1886240
-Indiana,777771
-Iowa,420199
-Kansas,414851
-Kentucky,453040
-Louisiana,503947
-Maine,205722
-Maryland,911781
-Massachusetts,1197208
-Michigan,1252685
-Minnesota,942830
-Mississippi,270712
-Missouri,775808
-Montana,171309
-Nebraska,277159
-Nevada,355837
-New Hampshire,224636
-New Jersey,1555781
-New Mexico,221281
-New York,2898440
-North Carolina,1471420
-North Dakota,108527
-Ohio,1464945
-Oklahoma,447888
-Oregon,627911
-Pennsylvania,1761627
-Rhode Island,156087
-South Carolina,656496
-South Dakota,121231
-Tennessee,845100
-Texas,3750797
-Utah,448109
-Vermont,101015
-Virginia,1312800
-Washington,1204728
-West Virginia,161686
-Wisconsin,829878
-Wyoming,73183
-Puerto Rico,443589
-Massachusetts,1197208
+GeographicAreaName,Over25Bachelors,Population
+Alabama,547975,3360058
+Alaska,89583,484058
+Arizona,931038,4944540
+Arkansas,307185,2036456
+California,5889724,26937872
+Colorado,1057825,3974943
+Connecticut,549166,2496420
+Delaware,134287,687311
+District of Columbia,129825,505145
+Florida,2982643,15484502
+Georgia,1410395,7080222
+Hawaii,219979,996668
+Idaho,220189,1170997
+Illinois,1886240,8694694
+Indiana,777771,4502015
+Iowa,420199,2123004
+Kansas,414851,1918081
+Kentucky,453040,3048442
+Louisiana,503947,3140201
+Maine,205722,991152
+Maryland,911781,4183858
+Massachusetts,1197208,4850576
+Michigan,1252685,6894627
+Minnesota,942830,3847212
+Mississippi,270712,1979664
+Missouri,775808,4206162
+Montana,171309,741950
+Nebraska,277159,1271770
+Nevada,355837,2136466
+New Hampshire,224636,979750
+New Jersey,1555781,6191229
+New Mexico,221281,1425988
+New York,2898440,13664734
+North Carolina,1471420,7187077
+North Dakota,108527,504375
+Ohio,1464945,8049805
+Oklahoma,447888,2619244
+Oregon,627911,2988118
+Pennsylvania,1761627,9028036
+Rhode Island,156087,746952
+South Carolina,656496,3563204
+South Dakota,121231,588029
+Tennessee,845100,4693962
+Texas,3750797,18772550
+Utah,448109,1911592
+Vermont,101015,445558
+Virginia,1312800,5872757
+Washington,1204728,5290324
+West Virginia,161686,1281086
+Wisconsin,829878,4015285
+Wyoming,73183,389847
+Puerto Rico,443589,2301735

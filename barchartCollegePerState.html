@@ -42,12 +42,21 @@
     const height = 2000;
     console.log(width);
     const render = data => {
-
+        console.log(data);
         const xValue = d => d.Over25Bachelors;
         const yValue = d => d.GeographicAreaName;
+        const population = d=>d.Population;
         const margin = {top: 10, right: 200, bottom: 20, left: 70};
         const innerwidth = width -margin.left -margin.right;
         const innerHeight = height-margin.top - margin.bottom;
+/*
+        const educationPercentage = [];
+            
+        for(i = 0; i<53; i++){
+            educationPercentage.push(d.Over25Bachelors[i]/d.population[i]);
+        }
+    */
+        
 
         const xScale = d3.scaleLinear()
             .domain([0, d3.max(data, xValue)])
@@ -74,6 +83,7 @@
     d3.csv('AllStatesEducationLevelsTest.csv').then(data =>{
         data.forEach(d =>{
             d.Over25Bachelors = Number(d.Over25Bachelors);
+            d.Population = d.Population;
         });
 
     render(data);
