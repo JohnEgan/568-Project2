@@ -48,6 +48,10 @@ var tooltip = d3.select('body').append('div')
   d3.json("./data/states-albers-10m.json", function(error, us) {
   console.log(us);
   if (error) throw error;
+  d3.csv('AllStatesEducationLevelsTest.csv' , function(education)
+  {
+    console.table(education)
+    
 
   svg.append("g")
       .attr("class", "states")
@@ -60,10 +64,13 @@ var tooltip = d3.select('body').append('div')
           var mouse = d3.mouse(svg.node()).map(function(d) {
                   return parseInt(d);
           });
+          let grouped = education.filter(function(edu) {return edu.GeographicAreaName == d.properties.name});
+          let pop = +grouped.Population
+          console.log(pop);
           tooltip.classed('hidden', false)
                           .attr('style', 'left:' + (mouse[0] + 15) +
                                   'px; top:' + (mouse[1] - 35) + 'px')
-                          .html(d.properties.name + "<br>Population:<br>Median Income:");
+                          .html(d.properties.name + "<br>Total Population:" + grouped.Population +"<br>Median Income:");
                   })
                   .on('mouseout', function() {
                       tooltip.classed('hidden', true);
@@ -73,7 +80,7 @@ var tooltip = d3.select('body').append('div')
       .attr("class", "state-borders")
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
 
-
+    })
 });
 
 function click(d) {
