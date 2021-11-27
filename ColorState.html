@@ -69,7 +69,7 @@ var tooltip = d3.select('body').append('div')
           tooltip.classed('hidden', false)
                           .attr('style', 'left:' + (mouse[0] + 15) +
                                   'px; top:' + (mouse[1] - 35) + 'px')
-                          .html(d.properties.name + "<br>Total Population:" + state[0]["Population"] +"<br>Median Income:" + state[0]["Median Earnings (Over 25)"]);
+                          .html(d.properties.name + "<br>Total Population:" + state[0]["Population"] +"<br>Median Income (Over 25):" + state[0]["Median Earnings"]);
                   })
                   .on('mouseout', function() {
                       tooltip.classed('hidden', true);
