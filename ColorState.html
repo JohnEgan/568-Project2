@@ -66,8 +66,14 @@ var tooltip = d3.select('body').append('div')
     
     // if the data is scaled using linear scale
     let linearScale = d3.scaleLinear()
-        .domain(d3.extent(MedianEarnings, d => d.value))
+        .domain(d3.extent(MedianEarnings, d => {
+            console.log(d)
+            return d
+        }))
 
+        console.table(d3.extent(MedianEarnings, d => {
+            return d
+        }))
   svg.append("g")
       .attr("class", "states")
     .selectAll("path")
