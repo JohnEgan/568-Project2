@@ -51,7 +51,22 @@ var tooltip = d3.select('body').append('div')
   d3.csv('AllStatesEducationLevelsTest.csv' , function(education)
   {
     console.table(education)
+
+    var MedianEarnings = [];
+    var column_num = 'MedianEarnings';
+    for(var i=0; i<51; i++) {
+
+    var value = education[i][column_num];
+    MedianEarnings.push(+value);   
+
+    }
+
+    var colorInterpolator = d3.interpolateRgbBasis(["blue", "steelblue", "green", "purple", "red"])
+    console.log(colorInterpolator)
     
+    // if the data is scaled using linear scale
+    let linearScale = d3.scaleLinear()
+        .domain(d3.extent(MedianEarnings, d => d.value))
 
   svg.append("g")
       .attr("class", "states")
@@ -59,21 +74,22 @@ var tooltip = d3.select('body').append('div')
     .data(topojson.feature(us, us.objects.states).features)
     .enter().append("path")
       .attr("d", path)
+      .attr("fill",  colorInterpolator(linearScale(MedianEarnings)))
       .on("click", click)
       .on('mousemove', function(d) {
           var mouse = d3.mouse(svg.node()).map(function(d) {
                   return parseInt(d);
           });
           let state = education.filter(function(edu) {return edu.GeographicAreaName == d.properties.name});
-          console.log(state);
           tooltip.classed('hidden', false)
                           .attr('style', 'left:' + (mouse[0] + 15) +
                                   'px; top:' + (mouse[1] - 35) + 'px')
-                          .html(d.properties.name + "<br>Total Population:" + state[0]["Population"] +"<br>Median Income (Over 25):" + state[0]["Median Earnings"]);
+                          .html(d.properties.name + "<br>Total Population:" + state[0]["Population"] +"<br>Median Income (Over 25): $" + state[0]["MedianEarnings"]);
                   })
                   .on('mouseout', function() {
                       tooltip.classed('hidden', true);
                   });
+              
      
   svg.append("path")
       .attr("class", "state-borders")
@@ -88,5 +104,6 @@ function click(d) {
     window.open('https://www.youtube.com/watch?v=RrmWFjnAP2E');
   }
 }
+
 
 </script>
