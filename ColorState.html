@@ -26,10 +26,7 @@ div.tooltip {
 </style>
 <nav>
   <ul class="nav">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="basicScatterPlot.html">Scatter 1</a></li>
-    <li><a href="barchartCollegePerState.html">Bar chart 1</a></li>
-    <li><a href="ColorState.html">State Image</a></li>
+    <a href="AllStatesEducationLevelsTest.csv">Download our CSV!!</a>
   </ul>
 </nav>
 <svg width="960" height="600"></svg>
@@ -62,14 +59,16 @@ var tooltip = d3.select('body').append('div')
         })
     
 
-      let colorInterpolator = d3.interpolateRgbBasis(["blue", "steelblue", "green", "purple", "red"])
+      let colorInterpolator = d3.interpolateRgbBasis(["#00FF00", "#00CC00", "#009900", "#006600", "#003300", "333300", "#330000", "#000000"])
 
     
       // if the data is scaled using linear scale
       let extents = d3.extent(MedianEarnings, d => {return d})
       let linearScale = d3.scaleLinear()
         .domain(extents)
-
+    
+    // add commas to amount of money for median earnings
+    internationalNumberFormat = new Intl.NumberFormat('en-US')
 
     svg.append("g")
       .attr("class", "states")
@@ -81,9 +80,6 @@ var tooltip = d3.select('body').append('div')
               console.log(MErn_GphicName_Dict[d.properties.name]);
                 return colorInterpolator(linearScale(MErn_GphicName_Dict[d.properties.name]))}
         )
-
-
-
       .on("click", click)
       .on('mousemove', function(d) {
           var mouse = d3.mouse(svg.node()).map(function(d) {
@@ -93,13 +89,13 @@ var tooltip = d3.select('body').append('div')
           tooltip.classed('hidden', false)
                           .attr('style', 'left:' + (mouse[0] + 15) +
                                   'px; top:' + (mouse[1] - 35) + 'px')
-                          .html(d.properties.name + "<br>Total Population:" + state[0]["Population"] +"<br>Median Income (Over 25): $" + state[0]["MedianEarnings"]);
+                          .html(d.properties.name + "<br>Total Population: " + internationalNumberFormat.format(state[0]["Population"]) +
+                          "<br>Median Income (Over 25): $" + internationalNumberFormat.format(state[0]["MedianEarnings"]));
                   })
                   .on('mouseout', function() {
                       tooltip.classed('hidden', true);
                   });
               
-     
   svg.append("path")
       .attr("class", "state-borders")
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
@@ -113,6 +109,5 @@ function click(d) {
     window.open('https://www.youtube.com/watch?v=RrmWFjnAP2E');
   }
 }
-
 
 </script>
