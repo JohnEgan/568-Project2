@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
-    <title></title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <style>
         h3{
             font-family: Helvetica;
@@ -14,17 +10,37 @@
             stroke-width: 1px;
             fill:none;
         }
-        svg{
-            width: 850px;
-            height: 850px;
-            display: block;
-            margin: auto;
-            background-color:white;
-        }
+        .states :hover {
+  fill: red;
+}
+
+.state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+div.tooltip {
+        color: #222;
+        background-color: #fff;
+        padding: .5em;
+        text-shadow: #f5f5f5 0 1px 0;
+        border-radius: 2px;
+        opacity: 0.9;
+        position: absolute;
+    }
     </style>
-</head>
 <body>
-<svg></svg>
+    
+<table>
+    <tr>
+        <td><svg width="850" height="850" id="svg1" display: block; margin: auto; background-color:white;></svg></td>
+        <td><svg width="850" height="550" id="svg2" display: block; margin: auto; left: 160; background-color:white;></svg></td>
+    </tr>
+</table>
 
 <nav>
     <ul class="nav">
@@ -34,11 +50,81 @@
       <li><a href="ColorState.html">State Image</a></li>
     </ul>
   </nav>
-  
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
 <script>
+console.log("0");
+/*
+  d3.json("./data/states-albers-10m.json").then(function(us){ 
+    
+    d3.csv('AllStatesEducationLevelsTest.csv' , function(education)
+    {
+      console.log("Nick Aigenti");
+      console.log(education);
+      var MedianEarnings = [];
+      var column_num = 'MedianEarnings';
+        for(var i=0; i<51; i++) {
+          var value = education[i][column_num];
+          MedianEarnings.push(+value);}
 
-    const svg = d3.select('svg');
+        education.map(d=>
+        {
+          MErn_GphicName_Dict[d.GeographicAreaName] = d.MedianEarnings
+        })
+    
 
+      let colorInterpolator = d3.interpolateRgbBasis(["#00FF00", "#00CC00", "#009900", "#006600", "#003300", "333300", "#330000", "#000000"])
+
+    
+      // if the data is scaled using linear scale
+      let extents = d3.extent(MedianEarnings, d => {return d})
+      let linearScale = d3.scaleLinear()
+        .domain(extents)
+    
+    // add commas to amount of money for median earnings
+    internationalNumberFormat = new Intl.NumberFormat('en-US')
+
+    map.append("g")
+      .attr("class", "states")
+      .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+      .enter().append("path")
+      .attr("d", path)
+      .attr("fill",d=>{
+              console.log(MErn_GphicName_Dict[d.properties.name]);
+                return colorInterpolator(linearScale(MErn_GphicName_Dict[d.properties.name]))}
+        )
+      .on("click", click)
+      .on('mousemove', function(d) {
+          var mouse = d3.mouse(map.node()).map(function(d) {
+                  return parseInt(d);
+          });
+          let state = education.filter(function(edu) {return edu.GeographicAreaName == d.properties.name});
+          tooltip.classed('hidden', false)
+                          .attr('style', 'left:' + (mouse[0] + 15) +
+                                  'px; top:' + (mouse[1] - 35) + 'px')
+                          .html(d.properties.name + "<br>Total Population: " + internationalNumberFormat.format(state[0]["Population"]) +
+                          "<br>Median Income (Over 25): $" + internationalNumberFormat.format(state[0]["MedianEarnings"]));
+                  })
+                  .on('mouseout', function() {
+                      tooltip.classed('hidden', true);
+                  });
+              
+  map.append("path")
+      .attr("class", "state-borders")
+      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+
+    })
+
+
+
+  });
+  */
+  console.log("2");
+    console.log("meme");
+    //////
+    const svg1 = d3.select('#svg1');
     const width = 1000;
     const height = 650;
     console.log(width);
@@ -60,7 +146,7 @@
             .domain(data.map(yValue))
             .range([0,innerHeight])
 
-        const g = svg.append('g')
+        const g = svg1.append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top+55})`);
         
         g.append('g').call(d3.axisLeft(yScale));
@@ -74,14 +160,14 @@
                 .attr('height', yScale.bandwidth()*0.55)
                 .attr('fill', '#0062cc');
         
-        svg.append("text")
+        svg1.append("text")
             .attr("transform", "translate(100,0)")
             .attr("x", 50)
             .attr("y", 50)
             .attr("font-size", "24px")
             .text("State Population Percengage With Bachelors Degree")
 
-        svg.append("text")
+        svg1.append("text")
             .attr("transform", "translate(100,0)")
             .attr("x", 80)
             .attr("y", 730)
@@ -90,6 +176,9 @@
 
     };
 
+    var margin = {top: 10, right: 30, bottom: 100, left: 160};
+    var svg2 = d3.select("#svg2");
+    
     
 
     d3.csv('AllStatesEducationLevelsTest.csv').then(data =>{
@@ -97,11 +186,76 @@
             d.Over25Bachelors = Number(d.Over25Bachelors);
             d.PopulationPercent = Number(d.Over25Bachelors)/Number(d.Population);
             d.PopulationPercent = d.PopulationPercent.toFixed(2)*100;
-        });
+            
+            
+        // Add X axis
+        var x = d3.scaleLinear()
+        .domain([0, 30])
+        .range([ 0, width ]);
+        svg2.append("text")
+        .attr("x", 800)
+        .attr("y", 100)
+        .text("Median Earnings");
+        svg2.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .text("Total Population")
+        .call(d3.axisBottom(x));
 
-    render(data);
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([0, 80000])
+            .range([ height, 0]);
+        svg2.append("g")
+        .text("Median Earnings")
+            .call(d3.axisLeft(y));
+
+        // Add dots
+        svg2.append("g")
+            .selectAll("dot")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) { return x((d['Over25Bachelors'])/(d['Population'])).toFixed(2)*100;; } )
+            .attr("cy", function (d) { return y(d['MedianEarnings']); } )
+            .attr("r", 3)
+            .style("fill", "#69b3a2")
+
+
+        svg2.append("text")
+                .attr("transform", "translate(100,0)")
+                .attr("x", 60)
+                .attr("y", 50)
+                .attr("font-size", "24px")
+                .text("Median Income vs Higher Education")
+
+        svg2.append("text")
+            .attr("transform", "translate(100,0)")
+            .attr("x", 80)
+            .attr("y", 600)
+            .attr("font-size", "24px")
+            .text("Population Percentage with Bachelors Degree")
+
+        svg2.append("text")
+            .attr("transform", "translate(100,0)")
+            .attr("x", -260)
+            .attr("y", 300)
+            .attr("font-size", "24px")
+            .text("Median Income")
+
+                });
+
+        render(data);
+      
+    })
+
+    function createBar(){
         
-        })
+    }
+
+    function createScatter(){
+
+    }
+
      
 </script>
 </body>
