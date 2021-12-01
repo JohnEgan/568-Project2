@@ -44,7 +44,7 @@ console.log(percent);
 console.log(data);
 // Add X axis
 var x = d3.scaleLinear()
-  .domain([0, 30])
+  .domain([10, 30])
   .range([ 0, width ]);
 svg.append("text")
   .attr("x", 800)
@@ -57,7 +57,7 @@ svg.append("g")
 
 // Add Y axis
 var y = d3.scaleLinear()
-    .domain([0, 80000])
+    .domain([15000, 80000])
     .range([ height, 0]);
   svg.append("g")
   .text("Median Earnings")

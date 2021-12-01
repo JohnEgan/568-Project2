@@ -37,8 +37,8 @@ div.tooltip {
     
 <table>
     <tr>
-        <td><svg width="850" height="850" id="svg1" display: block; margin: auto; background-color:white;></svg></td>
-        <td><svg width="850" height="550" id="svg2" display: block; margin: auto; left: 160; background-color:white;></svg></td>
+        <td><svg width="725" height="850" id="svg1" display: block; margin: auto; background-color:white;></svg></td>
+        <td><svg width="800" height="650" id="svg2" display: block; margin: auto; left: 160; background-color:white;></svg></td>
     </tr>
 </table>
 
@@ -126,7 +126,7 @@ console.log("0");
     console.log("meme");
     //////
     const svg1 = d3.select('#svg1');
-    const width = 1000;
+    const width = 900;
     const height = 650;
     console.log(width);
     const render = data => {
@@ -134,7 +134,7 @@ console.log("0");
         const xValue = d => d.PopulationPercent;
         const yValue = d => d.GeographicAreaName;
         const population = d=>d.Population;
-        const margin = {top: 10, right: 200, bottom: 20, left: 100};
+        const margin = {top: 0, right: 200, bottom: 20, left: 90};
         const innerwidth = width -margin.left -margin.right;
         const innerHeight = height-margin.top - margin.bottom;
         
@@ -159,7 +159,14 @@ console.log("0");
                 .attr('y', d=> yScale(yValue(d)))
                 .attr('width', d => xScale(xValue(d)))
                 .attr('height', yScale.bandwidth()*0.55)
-                .attr('fill', '#0062cc');
+                .attr("fill", function(d) {
+                    console.log(d.GeographicAreaName);
+                    if (d.GeographicAreaName == localStorage.getItem("stateName")) {
+                        return "red";
+                    }else{
+                        return '#0062cc';
+                    }
+                })
         
         svg1.append("text")
             .attr("transform", "translate(100,0)")
@@ -177,9 +184,16 @@ console.log("0");
 
     };
 
-    var margin = {top: 10, right: 30, bottom: 100, left: 160};
+    var margin2 = {top: 10, right: 30, bottom: 100, left: 80};
     var svg2 = d3.select("#svg2");
     
+    var svg2 = d3.select("#svg2")
+    .append("svg")
+        .attr("width", width + margin2.left + margin2.right)
+        .attr("height", height + margin2.top + margin2.bottom)
+    .append("g")
+        .attr("transform",
+            "translate(" + margin2.left + "," + margin2.top + ")");
     
 
     d3.csv('AllStatesEducationLevelsTest.csv').then(data =>{
@@ -192,20 +206,20 @@ console.log("0");
         // Add X axis
         var x = d3.scaleLinear()
         .domain([0, 30])
-        .range([ 0, width ]);
+        .range([ 0, 700 ]);
         svg2.append("text")
         .attr("x", 800)
         .attr("y", 100)
         .text("Median Earnings");
         svg2.append("g")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + 550 + ")")
         .text("Total Population")
         .call(d3.axisBottom(x));
 
         // Add Y axis
         var y = d3.scaleLinear()
-            .domain([0, 80000])
-            .range([ height, 0]);
+            .domain([15000, 80000])
+            .range([ 550, 0]);
         svg2.append("g")
         .text("Median Earnings")
             .call(d3.axisLeft(y));
@@ -219,7 +233,14 @@ console.log("0");
             .attr("cx", function (d) { return x((d['Over25Bachelors'])/(d['Population'])).toFixed(2)*100;; } )
             .attr("cy", function (d) { return y(d['MedianEarnings']); } )
             .attr("r", 3)
-            .style("fill", "#69b3a2")
+            .attr("fill", function(d) {
+                    console.log(d.GeographicAreaName);
+                    if (d.GeographicAreaName == localStorage.getItem("stateName")) {
+                        return "red";
+                    }else{
+                        return '#0062cc';
+                    }
+            })
 
 
         svg2.append("text")
@@ -235,13 +256,18 @@ console.log("0");
             .attr("y", 600)
             .attr("font-size", "24px")
             .text("Population Percentage with Bachelors Degree")
-
         svg2.append("text")
             .attr("transform", "translate(100,0)")
-            .attr("x", -260)
-            .attr("y", 300)
+            .attr("x", -180)
+            .attr("y", 240)
             .attr("font-size", "24px")
-            .text("Median Income")
+            .text("Med.")
+        svg2.append("text")
+            .attr("transform", "translate(100,0)")
+            .attr("x", -180)
+            .attr("y", 275)
+            .attr("font-size", "24px")
+            .text("Income")
 
                 });
 
