@@ -14,37 +14,54 @@
   pointer-events: none;
 }
 
-div.tooltip {
-        color: #222;
-        background-color: #fff;
-        padding: .5em;
-        text-shadow: #f5f5f5 0 1px 0;
-        border-radius: 2px;
-        opacity: 0.9;
-        position: absolute;
-    }
+div.tooltip {   
+    position: absolute;         
+    text-align: center;                           
+    padding: 2px;               
+    font: 12px sans-serif;      
+    background: lightsteelblue; 
+    border: 0px;        
+    border-radius: 8px;         
+    pointer-events: none;           
+}
+
+.legend {
+  display: table;
+  margin: 0 auto;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  height: 35px;
+  width: 250px;
+}
+
 </style>
 <nav>
   <ul class="nav">
     <a href="AllStatesEducationLevelsTest.csv">Download our CSV!!</a>
   </ul>
 </nav>
-
-<svg width="960" height="600" id="svg"></svg>
+<body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+<div width="960" height="600" id="map"></div>
+<div id="tooltip"><!-- Legend container --></div>
+<div id="legend"></div>
+
 <script>
 //var svg_item = document.createElementNS("http://www.w3.org/2000/svg","svg")
-var svg = d3.select("svg");
+var map = d3.select("#map").append("svg").attr("viewBox", "0 0 960 600");
 let MErn_GphicName_Dict = {}
 var path = d3.geoPath();
 
-var tooltip = d3.select('body').append('div')
+// We prepare a number format which will always return 2 decimal places.
+var formatNumber = d3.format('.2f');
+
+var tooltip = d3.select('#tooltip').append('div')
             .attr('class', 'hidden tooltip');
-//
-//d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-  d3.json("./data/states-albers-10m.json", function(error, us)
-  {
+
+d3.json("./data/states-albers-10m.json", function(error, us)
+{
   if (error) throw error;
     d3.csv('AllStatesEducationLevelsTest.csv' , function(education)
     {
@@ -68,10 +85,13 @@ var tooltip = d3.select('body').append('div')
       let linearScale = d3.scaleLinear()
         .domain(extents)
     
+  
+    d3.select(window).on('resize', resize);
+    
     // add commas to amount of money for median earnings
     internationalNumberFormat = new Intl.NumberFormat('en-US')
 
-    svg.append("g")
+    map.append("g")
       .attr("class", "states")
       .selectAll("path")
       .data(topojson.feature(us, us.objects.states).features)
@@ -82,14 +102,15 @@ var tooltip = d3.select('body').append('div')
                 return colorInterpolator(linearScale(MErn_GphicName_Dict[d.properties.name]))}
         )
       .on("click", click)
-      .on('mousemove', function(d) {
-          var mouse = d3.mouse(svg.node()).map(function(d) {
+      .on('mouseover', function(d) {
+          var mouse = d3.mouse(map.node()).map(function(d) {
                   return parseInt(d);
           });
+          console.log(mouse[0]);
           let state = education.filter(function(edu) {return edu.GeographicAreaName == d.properties.name});
           tooltip.classed('hidden', false)
-                          .attr('style', 'left:' + (mouse[0] + 15) +
-                                  'px; top:' + (mouse[1] - 35) + 'px')
+                          .attr('style', 'left:' + (mouse[0] + 10) +
+                                  'px; top:' + (mouse[1] - 15) + 'px')
                           .html(d.properties.name + "<br>Total Population: " + internationalNumberFormat.format(state[0]["Population"]) +
                           "<br>Median Income (Over 25): $" + internationalNumberFormat.format(state[0]["MedianEarnings"]));
                   })
@@ -97,7 +118,7 @@ var tooltip = d3.select('body').append('div')
                       tooltip.classed('hidden', true);
                   });
               
-  svg.append("path")
+  map.append("path")
       .attr("class", "state-borders")
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
 
@@ -111,5 +132,26 @@ function click(d) {
   if(d.properties.name == 'Alabama'){
     window.open('https://www.youtube.com/watch?v=RrmWFjnAP2E');
   }
+}
+
+function resize() {
+    // adjust things when the window size changes
+    width = parseInt(d3.select('#map').style('width'));
+    width = width - margin.left - margin.right;
+    height = width * mapRatio;
+
+    // update projection
+    projection
+        .translate([width / 2, height / 2])
+        .scale(width);
+
+    // resize the map container
+    map
+        .style('width', width + 'px')
+        .style('height', height + 'px');
+
+    // resize the map
+    map.select('.land').attr('d', path);
+    map.selectAll('.state').attr('d', path);
 }
 </script>
