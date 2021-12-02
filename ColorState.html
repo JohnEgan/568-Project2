@@ -35,11 +35,7 @@ div.tooltip {
 }
 
 </style>
-<nav>
-  <ul class="nav">
-    <a href="AllStatesEducationLevelsTest.csv">Download our CSV!!</a>
-  </ul>
-</nav>
+
 <body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
@@ -47,6 +43,7 @@ div.tooltip {
 <div width="960" height="600" id="map"></div>
 <div id="tooltip"><!-- Legend container --></div>
 <div id="legend"></div>
+<input type="button" id="btn" value="Download our CSV!!" />
 
 <script>
 //var svg_item = document.createElementNS("http://www.w3.org/2000/svg","svg")
@@ -154,4 +151,29 @@ function resize() {
     map.select('.land').attr('d', path);
     map.selectAll('.state').attr('d', path);
 }
+
+function download(file) {
+              
+    //creating an invisible element
+    var element = document.createElement('a');
+    element.setAttribute('href', 
+    'data:text/plain;charset=utf-8, ');
+    element.setAttribute('download', file);
+  
+    document.body.appendChild(element);
+  
+    //onClick property
+    element.click();
+  
+    document.body.removeChild(element);
+}
+
+document.getElementById("btn")
+.addEventListener("click", function() {
+    // Generate download of hello.txt 
+    // file with some content
+    var filename = "AllStatesEducationLevelsTest.csv";
+  
+    download(filename);
+}, false);
 </script>
