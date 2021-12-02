@@ -32,6 +32,9 @@ div.tooltip {
         opacity: 0.9;
         position: absolute;
     }
+.button {
+  margin-top: 1px;
+}
     </style>
 <body>
     
@@ -41,15 +44,7 @@ div.tooltip {
         <td><svg width="800" height="650" id="svg2" display: block; margin: auto; left: 160; background-color:white;></svg></td>
     </tr>
 </table>
-
-<nav>
-    <ul class="nav">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="basicScatterPlot.html">Scatter 1</a></li>
-      <li><a href="barchartCollegePerState.html">Bar chart 1</a></li>
-      <li><a href="ColorState.html">State Image</a></li>
-    </ul>
-  </nav>
+<input type="button" id="btn" value="Back" onclick="window.history.back()" />
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
@@ -67,15 +62,12 @@ console.log("0");
         for(var i=0; i<51; i++) {
           var value = education[i][column_num];
           MedianEarnings.push(+value);}
-
         education.map(d=>
         {
           MErn_GphicName_Dict[d.GeographicAreaName] = d.MedianEarnings
         })
     
-
       let colorInterpolator = d3.interpolateRgbBasis(["#00FF00", "#00CC00", "#009900", "#006600", "#003300", "333300", "#330000", "#000000"])
-
     
       // if the data is scaled using linear scale
       let extents = d3.extent(MedianEarnings, d => {return d})
@@ -84,7 +76,6 @@ console.log("0");
     
     // add commas to amount of money for median earnings
     internationalNumberFormat = new Intl.NumberFormat('en-US')
-
     map.append("g")
       .attr("class", "states")
       .selectAll("path")
@@ -114,11 +105,7 @@ console.log("0");
   map.append("path")
       .attr("class", "state-borders")
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-
     })
-
-
-
   });
   */
   console.log("name:" + localStorage.getItem("stateName"));
